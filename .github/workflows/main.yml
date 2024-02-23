@@ -19,8 +19,8 @@ jobs:
       - name: Deploy test.txt file to main server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
         with:
-          pass: zrZPW$W@j2th$
+          pass: a41BsPJ2gtt3#D
           user: root
-          host: 103.186.184.242
+          host: 43.231.127.145
           scp: |
             ./test => /var/www
