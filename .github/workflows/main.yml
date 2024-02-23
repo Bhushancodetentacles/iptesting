@@ -23,4 +23,4 @@ jobs:
           user: root
           host: 43.231.127.145
           scp: |
-            ./test => /home/
+            ./test => /home
