@@ -21,6 +21,6 @@ jobs:
         with:
           pass: Ubuntu@123
           user: ubuntu
-          host: 43.231.127.206
+          host: 43.231.127.145
           scp: |
             ./test => /home/ubuntu
