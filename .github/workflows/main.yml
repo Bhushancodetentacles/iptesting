@@ -13,7 +13,7 @@ jobs:
       - name: Deploy to windows server
         run: |
           sudo apt-get install -y lftp
-          lftp -u ${{ secrets.USERNAME }},${{ secrets.PASSWORD }} -e "set ssl:verify-certificate no; put test.txt -o ./boxes/test.txt" ${{ secrets.HOSTNAME }}
+          lftp -u ${{ secrets.USERNAME }},${{ secrets.PASSWORD }} -e "set ssl:verify-certificate no; mirror -R ./dist ./boxes/dist" ${{ secrets.HOSTNAME }}
         env:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
