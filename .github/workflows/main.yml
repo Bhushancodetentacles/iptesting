@@ -1,0 +1,20 @@
+name: Angular Build
+
+on:
+  push:
+    branches:
+      - main  # Change this to match your branch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Deploy to windows server
+        run: |
+          sudo apt-get install -y lftp
+          lftp -u ${{ secrets.USERNAME }},${{ secrets.PASSWORD }} -e "set ssl:verify-certificate no; mirror -R ./test ./boxes" ${{ secrets.HOSTNAME }}
+        env:
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          HOSTNAME: ${{ secrets.HOSTNAME }}
