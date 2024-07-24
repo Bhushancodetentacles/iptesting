@@ -4,8 +4,44 @@ on:
   push:
     branches:
       - dev
-
+      - main
 jobs:
+  build-and-deploy-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.x'
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Update React Scripts
+        run: npm install react-scripts@latest
+
+      - name: Build the app
+        run: npm run production
+        env:
+          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+
+      - name: Deploy to main server
+        uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
+        with:
+          pass: ${{ secrets.PASSWORD }}
+          user: ${{ secrets.USERNAME }}
+          host: ${{ secrets.HOSTNAME }}
+          scp: |
+            ./dist/* => /var/www/html/testing/admin
   build-and-deploy-dev:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -42,4 +78,4 @@ jobs:
           user: ${{ secrets.USERNAME }}
           host: ${{ secrets.HOSTNAME }}
           scp: |
-            ./dist/* => /var/www/html/testing
+            ./dist/* => /var/www/html/testing/admin
