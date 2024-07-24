@@ -33,6 +33,7 @@ jobs:
         run: npm run development
         env:
           VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
+          
 
       - name: Deploy to main server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
