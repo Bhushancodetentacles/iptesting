@@ -32,8 +32,6 @@ jobs:
 
       - name: Build the app
         run: npm run production
-        env:
-          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
 
       - name: Deploy to main server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
@@ -68,12 +66,9 @@ jobs:
         run: npm install react-scripts@latest
 
       - name: Build the app
-        run: npm run development
-        env:
-          VITE_BASE_URL: ${{ secrets.VITE_BASE_URL }}
-          
+        run: npm run development          
 
-      - name: Deploy to main server
+      - name: Deploy to dev server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
         with:
           pass: ${{ secrets.PASSWORD }}
