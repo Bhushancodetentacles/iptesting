@@ -1,17 +1,16 @@
-name: Deploy Code
+name: Deploy to Production
 
 on:
   push:
     branches:
-      - dev
       - main
+
 jobs:
   build-and-deploy-main:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     if: github.ref == 'refs/heads/main'
     environment: main
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,22 +30,21 @@ jobs:
         run: npm install react-scripts@latest
 
       - name: Build the app
-        run: npm run production
+        run: npm run build
 
-      - name: Deploy to main server
+      - name: Deploy to server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
         with:
           pass: ${{ secrets.PASSWORD }}
           user: ${{ secrets.USERNAME }}
           host: ${{ secrets.HOSTNAME }}
           scp: |
-            ./dist/* => /var/www/html/testing/admin
-  build-and-deploy-dev:
+            ./dist/* => /var/www/html/testing
+  build-and-deploy-dev-server:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     if: github.ref == 'refs/heads/dev'
+    timeout-minutes: 10
     environment: dev
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -66,13 +64,13 @@ jobs:
         run: npm install react-scripts@latest
 
       - name: Build the app
-        run: npm run development          
+        run: npm run development
 
-      - name: Deploy to dev server
+      - name: Deploy to server
         uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
         with:
           pass: ${{ secrets.PASSWORD }}
           user: ${{ secrets.USERNAME }}
           host: ${{ secrets.HOSTNAME }}
           scp: |
-            ./dist/* => /var/www/html/testing/admin
+            ./dist/* => /var/www/html/testing
